@@ -1,4 +1,4 @@
-export interface Driver {
+export interface IDriver {
   id: string;
   name: string;
   image: string;
@@ -18,14 +18,14 @@ export interface Driver {
   reviews: { name: string; comment: string; stars: number; time: string }[];
 }
 
-export interface Ride {
+export interface IRide {
   id: string;
   type: string;
   price: string;
   eta: string;
 }
 
-export interface Review {
+export interface IReview {
   name: string;
   comment: string;
   stars: number;
