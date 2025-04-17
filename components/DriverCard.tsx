@@ -27,7 +27,11 @@ const DriverCard = ({ driver }: { driver: IDriver }) => {
           <Text style={styles.distance}> • {driver.distance}</Text>
         </View>
       </View>
-      <TouchableOpacity onPress={() => router.push("/request")}>
+      <TouchableOpacity
+        onPress={() => router.push("/request")}
+        style={styles.requestButton}
+      >
+        <Text style={styles.distance}> Request</Text>
         <Ionicons name="car-outline" size={20} color="#959CA9" />
       </TouchableOpacity>
     </TouchableOpacity>
@@ -73,6 +77,13 @@ const styles = StyleSheet.create({
   distance: {
     fontSize: 13,
     color: "#777",
+  },
+  requestButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    padding: 8,
+    borderRadius: 12,
   },
 });
 
