@@ -75,6 +75,7 @@ const RequestRideScreen = () => {
             placeholder="Enter Destination"
             value={destination}
             onChangeText={setDestination}
+            placeholderTextColor={"#999"}
           />
         </View>
 
