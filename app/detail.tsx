@@ -16,6 +16,8 @@ import {
 } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 import { IReview } from "@/constants/interface";
+import MapMarker from "@/components/CarMarker";
+import ReviewCard from "@/components/ReviewCard";
 
 const DriverDetailScreen = () => {
   const router = useLocalSearchParams();
@@ -68,11 +70,7 @@ const DriverDetailScreen = () => {
               longitudeDelta: 0.01,
             }}
           >
-            <Marker key={driver.id} coordinate={driver.location}>
-              <View style={styles.mapIcon}>
-                <Ionicons name="car-sport" size={24} color="#4285F4" />
-              </View>
-            </Marker>
+            <MapMarker driver={driver} />
           </MapView>
           <Text style={styles.locationText}>
             <Entypo name="location-pin" size={16} color="blue" />{" "}
@@ -112,14 +110,7 @@ const DriverDetailScreen = () => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Latest Reviews</Text>
           {driver.reviews.map((review: IReview, index: number) => (
-            <View key={index} style={styles.reviewCard}>
-              <View style={styles.reviewHeader}>
-                <Text style={styles.reviewName}>{review.name}</Text>
-                <Text>⭐ {review.stars}</Text>
-              </View>
-              <Text>{review.comment}</Text>
-              <Text style={styles.reviewTime}>{review.time}</Text>
-            </View>
+            <ReviewCard key={index} review={review} />
           ))}
         </View>
       </ScrollView>
@@ -158,13 +149,6 @@ const styles = StyleSheet.create({
     height: 180,
     borderRadius: 12,
   },
-  mapIcon: {
-    backgroundColor: "white",
-    padding: 5,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 12,
-  },
   locationText: {
     marginTop: 8,
     fontSize: 13,
@@ -187,19 +171,6 @@ const styles = StyleSheet.create({
   statLabel: { fontSize: 12, color: "#555" },
   section: { marginBottom: 20 },
   sectionTitle: { fontWeight: "bold", fontSize: 16, marginBottom: 6 },
-  reviewCard: {
-    backgroundColor: "#f9f9f9",
-    padding: 12,
-    borderRadius: 12,
-    marginBottom: 10,
-  },
-  reviewHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 4,
-  },
-  reviewName: { fontWeight: "600" },
-  reviewTime: { fontSize: 11, color: "#999", marginTop: 4 },
 });
 
 export default DriverDetailScreen;

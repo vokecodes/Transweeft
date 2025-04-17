@@ -15,12 +15,17 @@ import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { IRide } from "@/constants/interface";
 import { rideOptions } from "@/constants/data";
+import RideType from "@/components/RideType";
+import { useLocation } from "./context/LocationContext";
 
 const RequestRideScreen = () => {
   const [selectedRide, setSelectedRide] = useState("1");
   const [isLoading, setIsLoading] = useState(false);
 
   const [destination, setDestination] = useState("");
+
+  const { currentLocation, locationCoordinates, locationLoading } =
+    useLocation();
 
   const handleRequestRide = () => {
     if (destination === "") {
@@ -41,8 +46,8 @@ const RequestRideScreen = () => {
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: 40.7128,
-          longitude: -74.006,
+          latitude: locationCoordinates.latitude,
+          longitude: locationCoordinates.longitude,
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}
@@ -55,7 +60,13 @@ const RequestRideScreen = () => {
           <Ionicons name="location-sharp" size={18} color="green" />
           <Text style={styles.locationText}>Current Location</Text>
         </View>
-        <Text style={styles.address}>123 Main Street, New York</Text>
+        {locationLoading ? (
+          <ActivityIndicator size="small" style={{ marginLeft: 26 }} />
+        ) : (
+          <Text style={styles.address}>
+            {currentLocation || "Unable to get address"}
+          </Text>
+        )}
 
         <View style={styles.locationRow}>
           <Ionicons name="location-outline" size={18} color="red" />
@@ -75,18 +86,12 @@ const RequestRideScreen = () => {
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item) => item.id}
           renderItem={({ item }: { item: IRide }) => (
-            <TouchableOpacity
-              style={[
-                styles.rideOption,
-                selectedRide === item.id && styles.rideOptionSelected,
-              ]}
-              onPress={() => setSelectedRide(item.id)}
-            >
-              <Ionicons name="car" size={24} color="black" />
-              <Text style={styles.rideType}>{item.type}</Text>
-              <Text>{item.price}</Text>
-              <Text style={styles.eta}>⏱ {item.eta}</Text>
-            </TouchableOpacity>
+            <RideType
+              key={item.id}
+              item={item}
+              selectedRide={selectedRide}
+              setSelectedRide={setSelectedRide}
+            />
           )}
         />
 
@@ -149,29 +154,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 16,
     marginBottom: 8,
-  },
-  rideOption: {
-    backgroundColor: "#f5f5f5",
-    padding: 12,
-    borderRadius: 12,
-    marginRight: 10,
-    width: 120,
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#eee",
-  },
-  rideOptionSelected: {
-    borderColor: "#000",
-    backgroundColor: "#fff",
-  },
-  rideType: {
-    fontWeight: "600",
-    marginTop: 4,
-  },
-  eta: {
-    color: "#666",
-    fontSize: 12,
-    marginTop: 2,
   },
   payment: {
     flexDirection: "row",

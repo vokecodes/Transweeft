@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { LocationProvider } from "./context/LocationContext";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -33,16 +34,18 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen
-          name="index"
-          options={{ headerShown: false, title: "Home" }}
-        />
-        <Stack.Screen name="detail" options={{ title: "Driver Detail" }} />
-        <Stack.Screen name="request" options={{ title: "Request Ride" }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
+      <LocationProvider>
+        <Stack>
+          <Stack.Screen
+            name="index"
+            options={{ headerShown: false, title: "Home" }}
+          />
+          <Stack.Screen name="detail" options={{ title: "Driver Detail" }} />
+          <Stack.Screen name="request" options={{ title: "Request Ride" }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style="auto" />
+      </LocationProvider>
     </ThemeProvider>
   );
 }
